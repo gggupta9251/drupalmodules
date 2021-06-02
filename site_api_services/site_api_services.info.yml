@@ -1,0 +1,9 @@
+name: Site API Services
+type: module
+description: 'A module to alter admin site information using services and also provide a rest API'
+package: Custom
+version: 1.0
+core: 8.x
+dependencies:
+  - drupal:rest
+  - drupal:restui

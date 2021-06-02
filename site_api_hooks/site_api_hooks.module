@@ -1,0 +1,49 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_system_site_information_settings_alter().
+ */
+
+function site_api_hooks_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+    if($form_id != 'system_site_information_settings') {
+        return;
+    }
+
+    // Add Site API Key field to 'Site Information' section
+    $siteapikey = \Drupal::config('siteapikey.configuration')->get('siteapikey');
+
+    $form['site_information']['siteapikey'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Site API Key'),
+        '#default_value' => ($siteapikey != '')?$siteapikey:'No API Key yet',
+        '#description' => t('An API Key to access site pages in JSON format.'),
+    );
+	
+	if($siteapikey != '') {	
+		// Change form submit button text to 'Update Configuration'
+		$form['actions']['submit']['#value'] = t('Update configuration');
+
+	}
+    // Handle form submission
+    $form['#submit'][] = 'site_api_hooks_handler';
+}
+
+/**
+ * Implements Submit handeller().
+ */
+
+function site_api_hooks_handler($form, &$form_state) {
+    // Update the system variable Site API Key
+    $config = \Drupal::configFactory()->getEditable('siteapikey.configuration');
+    $old_siteapikey = \Drupal::config('siteapikey.configuration')->get('siteapikey');
+
+    $new_siteapikey = $form_state->getValue(['siteapikey']);
+    $config->set('siteapikey', $new_siteapikey);
+    $config->save();
+
+    // Add message that Site API Key has been set
+    drupal_set_message(t('Site API Key has been saved @oldsiteapivalue with @siteapivalue.', ['@siteapivalue' => $new_siteapikey, '@oldsiteapivalue' => $old_siteapikey]), 'status');
+}

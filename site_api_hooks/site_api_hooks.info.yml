@@ -1,0 +1,9 @@
+name: Site API Hooks
+description: 'A module to alter admin site information using hooks and also provide a rest API'
+type: module
+package: Custom
+version: 1.0
+core: 8.x
+dependencies:
+  - drupal:rest
+  - drupal:restui
