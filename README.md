@@ -12,3 +12,8 @@ Uses hooks to alter basic site settings form.
 ===================
 
 Uses services and routing to alter basic site settings form.
+
+#Resources
+===================
+
+Used Drupal.org to get an idea, how to plan and ound some solutions as well so I applied them and modified as per requiement.
